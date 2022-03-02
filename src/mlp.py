@@ -7,6 +7,67 @@ Original file is located at
     https://colab.research.google.com/drive/1o-EPqBTHVqVEMfvXDficqw8l_veQ7eWp
 """
 
+import torch
+import torch.nn as nn
+import torchvision
+from torch.utils.data import Dataset, DataLoader
+from sklearn.metrics import roc_auc_score
+import torchvision.transforms as transforms
+import matplotlib.pyplot as plt
+import math
+
+from torch.nn.init import kaiming_uniform_
+from torch.nn.init import xavier_uniform_
+import torchmetrics
+from torchmetrics import Accuracy
+
+import pytorch_lightning as pl
+from pytorch_lightning import Trainer
+
+from torch.optim.lr_scheduler import ReduceLROnPlateau
+
+# neural nets
+import tensorflow as tf
+import tensorflow.keras.backend as K
+from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
+import tensorflow_addons as tfa
+import tensorflow_probability as tfp
+
+#useful
+from sklearn.metrics import roc_auc_score
+from tqdm.notebook import tqdm
+from typing import Union, Optional
+from time import time
+import warnings
+warnings.filterwarnings('ignore')
+from pylab import rcParams
+from matplotlib import rcParams
+from matplotlib.ticker import MaxNLocator
+from sklearn.preprocessing import LabelEncoder
+from multiprocessing import cpu_count
+from sklearn.metrics import classification_report, confusion_matrix
+import pandas as pd
+import  numpy as np
+import seaborn as sns
+from sklearn import metrics
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OrdinalEncoder
+from sklearn.impute import KNNImputer
+import matplotlib.pyplot as plt
+
+from imblearn.over_sampling import SMOTE, RandomOverSampler
+from imblearn.under_sampling import RandomUnderSampler
+from imblearn.pipeline import Pipeline
+
+import keras
+from keras.layers import LSTM, Dropout, Dense
+import tensorflow as tf
+
+from sklearn.model_selection import cross_val_score, KFold, StratifiedKFold, GroupKFold, StratifiedGroupKFold, train_test_split
+from sklearn.metrics import roc_auc_score
+
+import pymrmr
+
 class DNN(pl.LightningModule):
 
     def __init__(self, input_dim, output_dim, nn_depth, nn_width, dropout, momentum):
