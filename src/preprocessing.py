@@ -13,6 +13,7 @@ import  numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.impute import KNNImputer
 from imblearn.over_sampling import SMOTE, RandomOverSampler
+from imblearn.under_sampling import RandomUnderSampler
 
 def load_data(fname):
     df = pd.read_csv(fname)
