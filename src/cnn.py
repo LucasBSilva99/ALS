@@ -204,7 +204,7 @@ class SoftOrdering1DCNN(pl.LightningModule):
         }
         return [optimizer], [scheduler]
     
-def cross_train_test_pl(X, y, k, epochs, input_size, hidden_size, num_classes, learning_rate, ref_df, fast_run, rand_state, gpu=0, batch_size = 64, early_stop = 20):
+def cross_train_test_cnn(X, y, k, epochs, input_size, hidden_size, num_classes, learning_rate, ref_df, fast_run, rand_state, gpu=0, batch_size = 64, early_stop = 20):
 
   gkf = StratifiedGroupKFold(n_splits = k, shuffle = True, random_state=rand_state)
   gkf.get_n_splits(X, y)
