@@ -26,6 +26,7 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 from sklearn.metrics import accuracy_score
 from pytorch_lightning.loggers import TensorBoardLogger
 from sklearn.model_selection import StratifiedGroupKFold
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 class SoftOrdering1DCNN(pl.LightningModule):
 
