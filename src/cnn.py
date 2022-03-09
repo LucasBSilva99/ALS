@@ -264,7 +264,7 @@ def cross_train_test_cnn(X, y, k, epochs, input_size, hidden_size, num_classes, 
     trainer.fit(model, train_loader, test_loader)
     trainer.test(model, test_loader)
     
-def get_model(input_size, num_classes):
+def get_cnn(input_size, num_classes):
   model = SoftOrdering1DCNN(
         input_dim=input_size,
         output_dim=num_classes, 
