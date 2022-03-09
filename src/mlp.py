@@ -92,3 +92,14 @@ class DNN(pl.LightningModule):
             'monitor': 'valid_loss',
         }
         return [optimizer], [scheduler]
+    
+    def get_mlp(input_size, num_classes):
+        model = DNN(
+            input_dim=input_size, 
+            output_dim=num_classes, 
+            nn_depth=3, 
+            nn_width=256, 
+            dropout=0.2, 
+            momentum=0.1
+        )
+        return model 
