@@ -20,6 +20,17 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 
+def get_mlp(input_size, num_classes):
+  model = DNN(
+          input_dim=input_size, 
+          output_dim=num_classes, 
+          nn_depth=3, 
+          nn_width=256, 
+          dropout=0.2, 
+          momentum=0.1
+  )
+  return model 
+
 class DNN(pl.LightningModule):
 
     def __init__(self, input_dim, output_dim, nn_depth, nn_width, dropout, momentum):
@@ -92,14 +103,3 @@ class DNN(pl.LightningModule):
             'monitor': 'valid_loss',
         }
         return [optimizer], [scheduler]
-    
-def get_mlp(input_size, num_classes):
-  model = DNN(
-          input_dim=input_size, 
-          output_dim=num_classes, 
-          nn_depth=3, 
-          nn_width=256, 
-          dropout=0.2, 
-          momentum=0.1
-  )
-  return model 
