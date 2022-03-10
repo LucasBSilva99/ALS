@@ -20,6 +20,8 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 
+from sklearn.metrics import accuracy_score
+
 def get_mlp(input_size, num_classes):
   model = DNN(
           input_dim=input_size, 
@@ -85,9 +87,11 @@ class DNN(pl.LightningModule):
         y_probs = torch.sigmoid(y_logit).detach().cpu().numpy()
         loss = self.loss(y_logit, y)
         metric = roc_auc_score(y.cpu().numpy(), y_probs)
+        y_real = y.cpu().numpy()
+        y_pred = y_probs.round()
         self.log('test_loss', loss)
         self.log('test_metric', metric)
-        return loss, metric
+        self.log('accuracy', accuracy_score(y_real,y_pred))
         
     def configure_optimizers(self):
         optimizer = torch.optim.SGD(self.parameters(), lr=1e-2, momentum=0.9)
