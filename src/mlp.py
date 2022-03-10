@@ -87,6 +87,7 @@ class DNN(pl.LightningModule):
         metric = roc_auc_score(y.cpu().numpy(), y_probs)
         self.log('test_loss', loss)
         self.log('test_metric', metric)
+        return loss, metric
         
     def configure_optimizers(self):
         optimizer = torch.optim.SGD(self.parameters(), lr=1e-2, momentum=0.9)
