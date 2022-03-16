@@ -22,14 +22,14 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 
 from sklearn.metrics import accuracy_score
 
-def get_mlp(input_size, num_classes):
+def get_mlp(input_size, num_classes, nn_depth=3, nn_width=256, dropout=0.2, momentum=0.1):
   model = DNN(
           input_dim=input_size, 
           output_dim=num_classes, 
-          nn_depth=3, 
-          nn_width=256, 
-          dropout=0.2, 
-          momentum=0.1
+          nn_depth=nn_depth, 
+          nn_width=nn_width, 
+          dropout=dropout, 
+          momentum=momentum
   )
   return model 
 
