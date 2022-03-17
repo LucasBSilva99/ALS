@@ -264,17 +264,17 @@ def cross_train_test_cnn(X, y, k, epochs, input_size, hidden_size, num_classes, 
     trainer.fit(model, train_loader, test_loader)
     trainer.test(model, test_loader)
     
-def get_cnn(input_size, num_classes):
+def get_cnn(input_size, num_classes, sign_size=16, cha_input=64, cha_hidden=64, K=2, dropout_input=0.3, dropout_hidden=0.3, dropout_output=0.2):
   model = SoftOrdering1DCNN(
         input_dim=input_size,
         output_dim=num_classes, 
-        sign_size=16, 
-        cha_input=64, 
-        cha_hidden=64, 
-        K=2, 
-        dropout_input=0.3, 
-        dropout_hidden=0.3, 
-        dropout_output=0.2
+        sign_size=sign_size, 
+        cha_input=cha_input, 
+        cha_hidden=cha_hidden, 
+        K=K, 
+        dropout_input=dropout_input, 
+        dropout_hidden=dropout_hidden, 
+        dropout_output=dropout_output
   )
 
   return model
