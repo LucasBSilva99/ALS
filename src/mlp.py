@@ -21,6 +21,7 @@ import pytorch_lightning as pl
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 
 from sklearn.metrics import accuracy_score
+from torchmetrics import ConfusionMatrix
 
 def get_mlp(input_size, num_classes, nn_depth=3, nn_width=256, dropout=0.2, momentum=0.1):
   model = DNN(
