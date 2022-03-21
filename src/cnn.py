@@ -173,18 +173,17 @@ class SoftOrdering1DCNN(pl.LightningModule):
         loss = self.loss(y_logit, y)
         metric = roc_auc_score(y.cpu().numpy(), y_probs)
 
-
         y_real = y.cpu().numpy()
         y_pred = y_probs.round()
 
-        # confusion_matrix = torchmetrics.functional.confusion_matrix(torch.tensor(y_pred).type(torch.int), y.type(torch.int), num_classes=2)
+        preds = torch.round(torch.sigmoid(y_logit).detach())
+        cm = ConfusionMatrix(num_classes=2)
+        cm = cm(preds.type(torch.IntTensor),y.type(torch.IntTensor))
 
-        # df_cm = pd.DataFrame(confusion_matrix.cpu().numpy(), index = range(2), columns=range(2))
-        # plt.figure(figsize = (10,7))
-        # fig_ = sns.heatmap(df_cm, annot=True, cmap='Spectral').get_figure()
-        # plt.close(fig_)
-        
-        # self.logger.experiment.add_figure("Confusion matrix", fig_)
+        df_cm = pd.DataFrame(cm.numpy(), index = range(2), columns=range(2))
+
+        print('VAL CONFUSION MATRIX')
+        print(df_cm)
 
         self.log('test_loss', loss)
         self.log('test_metric', metric)
@@ -205,64 +204,6 @@ class SoftOrdering1DCNN(pl.LightningModule):
             'monitor': 'valid_loss',
         }
         return [optimizer], [scheduler]
-    
-def cross_train_test_cnn(X, y, k, epochs, input_size, hidden_size, num_classes, learning_rate, ref_df, fast_run, rand_state, gpu=0, batch_size = 64, early_stop = 20):
-
-  gkf = StratifiedGroupKFold(n_splits = k, shuffle = True, random_state=rand_state)
-  gkf.get_n_splits(X, y)
-
-  scores = []
-
-  scaler = MinMaxScaler()
-  X_scaled = scaler.fit_transform(X)
-
-  X_scaled_df = pd.DataFrame(X_scaled, columns = X.columns)
-  
-  for train_idx, test_idx in gkf.split(X_scaled, y, groups=ref_df['REF'].tolist()):
-
-    X_train, X_test = X_scaled_df.iloc[list(train_idx)], X_scaled_df.iloc[list(test_idx)]
-    y_train, y_test = y.iloc[list(train_idx)], y.iloc[list(test_idx)]
-
-    X_train_sm, y_train_sm = resample_data(X_train, y_train)
-
-    dataset_train = AlsDataset(X_train_sm, y_train_sm)
-
-    dataset_test = AlsDataset(X_test, y_test)
-
-    train_loader = torch.utils.data.DataLoader(
-                      dataset_train, 
-                      batch_size=batch_size,
-                      shuffle=True)
-
-    test_loader = torch.utils.data.DataLoader(
-                      dataset_test,
-                      batch_size=batch_size,
-                      shuffle=False)
-
-    model = SoftOrdering1DCNN(
-        input_dim=input_size,
-        output_dim=num_classes, 
-        sign_size=16, 
-        cha_input=64, 
-        cha_hidden=64, 
-        K=2, 
-        dropout_input=0.3, 
-        dropout_hidden=0.3, 
-        dropout_output=0.2
-    )
-
-    early_stop_callback = EarlyStopping(
-      monitor='valid_loss',
-      min_delta=.0,
-      patience= early_stop,
-      verbose=True,
-      mode='min'
-    )
-
-    trainer = pl.Trainer(callbacks=[early_stop_callback], min_epochs=10, max_epochs=epochs, gpus=gpu, fast_dev_run = fast_run)
-
-    trainer.fit(model, train_loader, test_loader)
-    trainer.test(model, test_loader)
     
 def get_cnn(input_size, num_classes, sign_size=16, cha_input=64, cha_hidden=64, K=2, dropout_input=0.3, dropout_hidden=0.3, dropout_output=0.2):
   model = SoftOrdering1DCNN(
