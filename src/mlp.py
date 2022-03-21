@@ -87,8 +87,19 @@ class DNN(pl.LightningModule):
         y_probs = torch.sigmoid(y_logit).detach().cpu().numpy()
         loss = self.loss(y_logit, y)
         metric = roc_auc_score(y.cpu().numpy(), y_probs)
+
         y_real = y.cpu().numpy()
         y_pred = y_probs.round()
+
+        preds = torch.round(torch.sigmoid(y_logit).detach())
+        cm = ConfusionMatrix(num_classes=2)
+        cm = cm(preds.type(torch.IntTensor),y.type(torch.IntTensor))
+
+        df_cm = pd.DataFrame(cm.numpy(), index = range(2), columns=range(2))
+
+        print('VAL CONFUSION MATRIX')
+        print(df_cm)
+
         self.log('test_loss', loss)
         self.log('test_metric', metric)
         self.log('accuracy', accuracy_score(y_real,y_pred))
