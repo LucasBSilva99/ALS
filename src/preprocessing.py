@@ -19,7 +19,7 @@ def load_data(fname):
     df = pd.read_csv(fname)
     return df
 
-def load_preprocess_data(df, drop_threshold):
+def load_preprocess_data(df, drop_threshold, n_knn):
   print('# of Patients')
   print(df['REF'].nunique())
   df['REF'] = df['REF'].apply(np.int64)
@@ -58,7 +58,7 @@ def load_preprocess_data(df, drop_threshold):
   y = y.rename(columns={"Y": "Evolution"})
 
   #Missing Value Imputation
-  imputer = KNNImputer(n_neighbors=3, weights='uniform', metric='nan_euclidean')
+  imputer = KNNImputer(n_neighbors=n_knn, weights='uniform', metric='nan_euclidean')
   imputer.fit(X[num_cols])
   X[num_cols] = np.round(imputer.transform(X[num_cols]))
   if 'BMI' in num_cols:
@@ -69,8 +69,12 @@ def load_preprocess_data(df, drop_threshold):
 
   #plot target class distribution
   plot_dist(y)
+    
+  #ref dataframe
+  ref_df = pd.DataFrame(X['REF'])
+  X = X.drop('REF', axis=1)
 
-  return X, y
+  return X, y, ref_df
 
 #Plot the target class distribution 
 def plot_dist(y):
