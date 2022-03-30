@@ -69,6 +69,9 @@ def load_preprocess_data(df, drop_threshold, n_knn):
 
   #plot target class distribution
   plot_dist(y)
+  
+  #get temporal alignment
+  ref_align = temporal_align(X)
     
   #ref dataframe
   ref_df = pd.DataFrame(X['REF'])
