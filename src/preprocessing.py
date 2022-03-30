@@ -77,7 +77,7 @@ def load_preprocess_data(df, drop_threshold, n_knn):
   ref_df = pd.DataFrame(X['REF'])
   X = X.drop('REF', axis=1)
 
-  return X, y, ref_df
+  return X, y, ref_df, ref_align
 
 #Plot the target class distribution 
 def plot_dist(y):
