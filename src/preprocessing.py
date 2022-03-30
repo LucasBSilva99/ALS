@@ -103,3 +103,12 @@ def resample_data(X, y):
   #plot_dist(y_sm)
 
   return X_sm, y_sm
+
+#Get Temporal Alignments By the REF
+def temporal_align(X):
+  ref_align = {}
+
+  for ref in X['REF']:
+    ref_align[ref] = X.iloc[X[X['REF']== ref].index.values]
+
+  return ref_align
