@@ -105,10 +105,12 @@ def resample_data(X, y):
   return X_sm, y_sm
 
 #Get Temporal Alignments By the REF
-def temporal_align(X):
+def temporal_align1(X, y):
   ref_align = {}
+  y_align = {}
 
   for ref in X['REF']:
     ref_align[ref] = X.iloc[X[X['REF']== ref].index.values]
+    y_align[ref] = y.iloc[X[X['REF']== ref].index.values]
 
-  return ref_align
+  return ref_align, y_align
