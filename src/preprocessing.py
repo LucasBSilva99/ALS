@@ -105,7 +105,7 @@ def resample_data(X, y):
   return X_sm, y_sm
 
 #Get Temporal Alignments By the REF
-def temporal_align1(X, y):
+def temporal_align(X, y):
   ref_align = {}
   y_align = {}
 
