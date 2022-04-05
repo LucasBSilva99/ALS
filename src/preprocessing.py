@@ -71,13 +71,13 @@ def load_preprocess_data(df, drop_threshold, n_knn):
   plot_dist(y)
   
   #get temporal alignment
-  ref_align = temporal_align(X)
+  ref_align, y_align = temporal_align(X, y)
     
   #ref dataframe
   ref_df = pd.DataFrame(X['REF'])
   X = X.drop('REF', axis=1)
 
-  return X, y, ref_df, ref_align
+  return X, y, ref_df, ref_align, y_align
 
 #Plot the target class distribution 
 def plot_dist(y):
