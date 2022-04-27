@@ -19,7 +19,7 @@ def load_data(fname):
     df = pd.read_csv(fname)
     return df
 
-def load_preprocess_data(df, drop_threshold, n_knn):
+def load_preprocess_data(df, drop_threshold, n_knn, graph=True):
   print('# of Patients')
   print(df['REF'].nunique())
   df['REF'] = df['REF'].apply(np.int64)
@@ -68,7 +68,8 @@ def load_preprocess_data(df, drop_threshold, n_knn):
   X['BMI'] = X['BMI'].apply(np.float64)
 
   #plot target class distribution
-  plot_dist(y)
+  if graph:
+    plot_dist(y)
   
   #get temporal alignment
   ref_align, y_align = temporal_align(X, y)
