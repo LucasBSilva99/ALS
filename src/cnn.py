@@ -187,6 +187,8 @@ class SoftOrdering1DCNN(pl.LightningModule):
         self.log('test_loss', loss)
         self.log('test_metric', metric)
         self.log('accuracy', accuracy_score(y_real,y_pred))
+        self.log('sensitivity', df_cm[0][0]/(df_cm[0][0]+df_cm[0][1]))
+        self.log('specificity', df_cm[1][1]/(df_cm[1][0]+df_cm[1][1]))
         
     def configure_optimizers(self):
         optimizer = torch.optim.SGD(self.parameters(), lr=1e-2)
